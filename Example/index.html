@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="graph" width="1000" heigth="50"></canvas>
+
+    <script>
+        import { Settings, GraphYa } from '../graph.js';
+
+        const ctx = document.getElementById('graph').getContext('2d');
+        const graphya = new GraphYa();
+
+        const minT = 0;
+        const maxT = 100;
+
+        const colors = {
+            0: '000000',
+            25: '0000ff',
+            50: '00ff00',
+            75: 'ff0000',
+            100: 'ffffff'
+        }
+
+        const settings = new Settings(0, 50, minT, maxT, colors);
+
+        data = [];
+        for (var i = minT; i <= maxT; i++) {
+            data.push({ timestamp: i, value: i })
+        }
+
+        graphya.addGraph('text graph', ctx, settings);
+        graphya.setGraphData('text graph', data);
+        graphya.plot('text graph');
+    </script>
+</body>
+</html>
