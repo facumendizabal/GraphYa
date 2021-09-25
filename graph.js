@@ -71,11 +71,11 @@ function hex2rgb(color) {
 
 export class Settings {
     constructor(y, h, minT, maxT, colors){
-        this.y = y;;
-        this.h = h;;
-        this.minT = minT;;
-        this.maxT = maxT;;
-        this.colors = colors;;
+        this.y = y;
+        this.h = h;
+        this.minT = minT;
+        this.maxT = maxT;
+        this.colors = colors;
     }
 }
 
@@ -93,21 +93,42 @@ class Box {
 }
 
 export class GraphYa {
+    //An object containing all the charts with name and Graph.
     graphs = {};
 
+    //Add a graph to the graphs object
+    /**
+     * @param {String} name
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Settings} settings
+     */
     addGraph(name, ctx, settings) {
         this.graphs[name] = new Graph(ctx, settings);
     }
 
+    //Set the data property of an specific graph.
+    /**
+    * @param {String} name
+    * @param {Object} points
+    */
     setGraphData(name, points) {
         let graph = this.graphs[name];
         graph.boxs = graph.pointToBox(points);
     }
 
+    //Plot all the graphs.
     plot() {
         Object.keys(this.graphs).forEach(name => {
             this.graphs[name].plot();
         })
+    }
+
+    //Plot an specific graph.
+    /**
+     * @param {String} name
+     */
+    plot(name) {
+        this.graphs[name].plot();
     }
 }
 
@@ -118,6 +139,11 @@ class Graph {
         this.boxs = [];
     }
 
+    //Transforms the array data to a box object.
+    //Data must be an array of objects with timestamp and value.
+    /**
+     * @param {Array} data
+     */
     pointToBox(data) {
         let boxs = [];
 
@@ -135,7 +161,10 @@ class Graph {
 
             const color = getColor(value, colors);
 
-            const endTime = data[index + 1] ? data[index + 1].timestamp : data[index].timestamp;
+            //If there is an index more use it, otherwise use current
+            const endTime = data[index + 1]
+                ? data[index + 1].timestamp
+                : data[index].timestamp;
 
             const x = scale(time, minT, maxT, 0, canvasWidth);
             const w = scale(endTime, minT, maxT, 0, canvasWidth);
@@ -160,7 +189,7 @@ class Graph {
         const length = this.boxs.length;
         const box = this.boxs[length - 1];
 
-        //Dirt fix
+        //Dirty fix
         this.ctx.clearRect(box.w, box.y, this.ctx.canvas.width, box.h)
     }
 }
