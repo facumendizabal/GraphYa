@@ -3,7 +3,7 @@
 <body>
     <canvas id="graph" width="1000" heigth="50"></canvas>
 
-    <script>
+    <script type="module">
         import { Settings, GraphYa } from '../graph.js';
 
         const ctx = document.getElementById('graph').getContext('2d');
@@ -22,8 +22,8 @@
 
         const settings = new Settings(0, 50, minT, maxT, colors);
 
-        data = [];
-        for (var i = minT; i <= maxT; i++) {
+        let data = [];
+        for (let i = minT; i <= maxT; i++) {
             data.push({ timestamp: i, value: i })
         }
 
